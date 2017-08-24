@@ -98,6 +98,9 @@ class Api extends REST_Controller {
 						case 'getroomslistavlb'	    : $result = $this->Api_model->getroomslistavlb($params); break;
 						case 'getbedslistbyroomno'	    : $result = $this->Api_model->getbedslistbyroomno($params); break;
 						case 'getdetailstoadd'	    : $result = $this->Api_model->getdetailstoadd($params); break;
+						case 'getdetailsbyid'	    : $result = $this->Api_model->getdetailsbyid($params); break;
+						case 'gettotalrooms'	    : $result = $this->Api_model->gettotalrooms($params); break;
+						case 'getdetailsbyroom'	    : $result = $this->Api_model->getdetailsbyroom($params); break;
 					
 						// case 'getStaff'				: $result = $this->api_model->getStaff($token->reg_no, $params); break;
 						// case 'Upload'				: $result = $this->Api_model->Upload($token->reg_no,$params); break;
@@ -251,6 +254,13 @@ class Api extends REST_Controller {
 	 
 	}
 
+			// get rooms available  list post
+	public function gettotalrooms_post(){	
+		$data['hosteltype']=$this->post('hosteltype');	
+	    $this->getData('gettotalrooms',$data);	    	
+	 
+	}
+
 
 	// get beds list by roomno post
 	public function getbedslistbyroomno_post(){	
@@ -266,6 +276,23 @@ class Api extends REST_Controller {
 		$data['hosteltype']=$this->post('hosteltype');
 		$data['reg_no']=$this->post('reg_no');	
 	    $this->getData('getdetailstoadd',$data);	    	
+	 
+	}
+
+		// get student details list by id post
+	public function getdetailsbyid_post(){	
+		$data['hosteltype']=$this->post('hosteltype');
+		$data['reg_no']=$this->post('reg_no');	
+	    $this->getData('getdetailsbyid',$data);	    	
+	 
+	}
+
+			// get student details list by id post
+	public function getdetailsbyroom_post(){	
+		$data['hosteltype']=$this->post('type');
+		$data['roomno']=$this->post('roomno');	
+		$data['bedno']=$this->post('bedno');	
+	    $this->getData('getdetailsbyroom',$data);	    	
 	 
 	}
 

@@ -217,6 +217,16 @@ class Api_model extends CI_Model
         return $data->result();
     }
 
+        //  get rooms total list 
+    public function gettotalrooms($data){
+        $type=$data['hosteltype'];
+
+        $sql="select * from raghuerp_hostel.roomsconfig r where r.hosteltype='$type'"; 
+      
+        $data=$this->db->query($sql);
+        return $data->result();
+    }
+
      //  get beds list by roomno  
     public function getbedslistbyroomno($data){
         $type=$data['hosteltype'];
@@ -233,6 +243,29 @@ class Api_model extends CI_Model
       
         $data=$this->db->query($sql);
         return $data->result();
+    }
+
+   //  get details by roomno and bedno  
+    public function getdetailsbyroom($data){
+        $type=$data['hosteltype'];
+        $roomno=$data['roomno'];
+        $bedno=$data['bedno'];
+
+        
+        $check=$this->db->query("select reg_no from raghuerp_hostel.roomdetails where roomno='$roomno' and bedno='$bedno' and hsttype='$type' ")->result();
+
+      if(sizeof($check)==0){
+        return null;
+      }else{
+
+     $reg_no=$check[0]->reg_no;
+           $sql="select s.reg_no,(select r.registrationid from raghuerp_hostel.registrationdetails r where r.reg_no='$reg_no' ) as rid,(select r.type from raghuerp_hostel.registrationdetails r where r.reg_no='$reg_no' ) as type,(select r.genderT from raghuerp_hostel.registrationdetails r where r.reg_no='$reg_no' ) as genderT,(select r.studentname from raghuerp_hostel.registrationdetails r where r.reg_no='$reg_no' ) as studentname,(select r.dateofbirth from raghuerp_hostel.registrationdetails r where r.reg_no='$reg_no' ) as dateofbirth,(select r.distance from raghuerp_hostel.registrationdetails r where r.reg_no='$reg_no' ) as distance,(select r.pwd from raghuerp_hostel.registrationdetails r where r.reg_no='$reg_no' ) as pwd,(select r.fathername from raghuerp_hostel.registrationdetails r where r.reg_no='$reg_no' ) as fathername,(select r.parentmobile from raghuerp_hostel.registrationdetails r where r.reg_no='$reg_no' ) as parentmobile,(select r.parentemail from raghuerp_hostel.registrationdetails r where r.reg_no='$reg_no' ) as parentemail,(select r.parentaddress from raghuerp_hostel.registrationdetails r where r.reg_no='$reg_no' ) as parentaddress,(select r.guardianname from raghuerp_hostel.registrationdetails r where r.reg_no='$reg_no' ) as guardianname,(select r.guardianrelation from raghuerp_hostel.registrationdetails r where r.reg_no='$reg_no' ) as guardianrelation,(select r.guardianmobile from raghuerp_hostel.registrationdetails r where r.reg_no='$reg_no' ) as guardianmobile,(select r.guardianemail from raghuerp_hostel.registrationdetails r where r.reg_no='$reg_no' ) as guardianemail,(select r.guardianaddress from raghuerp_hostel.registrationdetails r where r.reg_no='$reg_no' ) as guardianaddress,(select college from raghuerp_db1.colleges c where c.id=s.college) as college,(select branch from raghuerp_db1.branches b where b.id=s.branch) as branch,(select year from raghuerp_db1.year y where y.id=s.year) as year,(select d.roomno from raghuerp_hostel.roomdetails d where d.reg_no='$reg_no' ) as roomno,(select d.bedno from raghuerp_hostel.roomdetails d where d.reg_no='$reg_no' ) as bedno,(select d.hsttype from raghuerp_hostel.roomdetails d where d.reg_no='$reg_no' ) as hsttype,(select d.roomno from raghuerp_hostel.roomdetails d where d.reg_no='$reg_no' ) as roomno,(select rc.hostelid from raghuerp_hostel.roomsconfig rc where rc.roomno=(select roomno from raghuerp_hostel.roomdetails dc where dc.reg_no='$reg_no' )  and rc.hosteltype='$type' ) as hostelid,(select rc.blockid from raghuerp_hostel.roomsconfig rc where rc.roomno=(select roomno from raghuerp_hostel.roomdetails dc where dc.reg_no='$reg_no' )  and rc.hosteltype='$type' ) as blockid,(select rc.roomtype from raghuerp_hostel.roomsconfig rc where rc.roomno=(select roomno from raghuerp_hostel.roomdetails dc where dc.reg_no='$reg_no' ) and rc.hosteltype='$type' ) as roomtype from raghuerp_db1.students s where s.reg_no='$reg_no'"; 
+            $data=$this->db->query($sql)->row();
+        return $data;
+      }
+        
+      
+       
     }
 
     //  get bookings list 
@@ -262,10 +295,40 @@ class Api_model extends CI_Model
   //  vacant room  
     public function getdetailstoadd($data){
   $reg_no=$data['reg_no'];
-        $details=$this->db->query("select *,(select college from raghuerp_db1.colleges c where c.id=s.college) as ccollege,(select branch from raghuerp_db1.branches b where b.id=s.branch) as bbranch,(select branch from raghuerp_db1.year y where y.id=s.year) as yyear from raghuerp_hostel.registrationdetails r inner join raghuerp_db1.students s on r.reg_no=s.reg_no and s.reg_no='$reg_no'")->row();
+        $details=$this->db->query("select s.reg_no,(select r.type from raghuerp_hostel.registrationdetails r where r.reg_no='$reg_no' ) as type,(select r.genderT from raghuerp_hostel.registrationdetails r where r.reg_no='$reg_no' ) as genderT,(select r.studentname from raghuerp_hostel.registrationdetails r where r.reg_no='$reg_no' ) as studentname,(select r.dateofbirth from raghuerp_hostel.registrationdetails r where r.reg_no='$reg_no' ) as dateofbirth,(select r.distance from raghuerp_hostel.registrationdetails r where r.reg_no='$reg_no' ) as distance,(select r.fathername from raghuerp_hostel.registrationdetails r where r.reg_no='$reg_no' ) as fathername,(select r.parentmobile from raghuerp_hostel.registrationdetails r where r.reg_no='$reg_no' ) as parentmobile,(select r.parentemail from raghuerp_hostel.registrationdetails r where r.reg_no='$reg_no' ) as parentemail,(select r.parentaddress from raghuerp_hostel.registrationdetails r where r.reg_no='$reg_no' ) as parentaddress,(select r.guardianname from raghuerp_hostel.registrationdetails r where r.reg_no='$reg_no' ) as guardianname,(select r.guardianrelation from raghuerp_hostel.registrationdetails r where r.reg_no='$reg_no' ) as guardianrelation,(select r.guardianmobile from raghuerp_hostel.registrationdetails r where r.reg_no='$reg_no' ) as guardianmobile,(select r.guardianemail from raghuerp_hostel.registrationdetails r where r.reg_no='$reg_no' ) as guardianemail,(select r.guardianaddress from raghuerp_hostel.registrationdetails r where r.reg_no='$reg_no' ) as guardianaddress,(select college from raghuerp_db1.colleges c where c.id=s.college) as college,(select branch from raghuerp_db1.branches b where b.id=s.branch) as branch,(select year from raghuerp_db1.year y where y.id=s.year) as year,(select d.roomno from raghuerp_hostel.roomdetails d where d.reg_no='$reg_no' ) as roomno,(select d.bedno from raghuerp_hostel.roomdetails d where d.reg_no='$reg_no' ) as bedno,(select d.hsttype from raghuerp_hostel.roomdetails d where d.reg_no='$reg_no' ) as hsttype,(select d.roomno from raghuerp_hostel.roomdetails d where d.reg_no='$reg_no' ) as roomno from raghuerp_db1.students s where s.reg_no='$reg_no'")->row();
 //  $count=sizeof($list)+1;
 //        $this->db->query("update raghuerp_hostel.registrationdetails r set r.pid='".$count."',type='".$data['type']."', r.rstatus='Accepted' where r.registrationid='".$data['registrationid']."'");
     return $details;
+    }
+
+     //  vacant room  
+    public function getdetailsbyid($data){
+        $reg_no=$data['reg_no'];
+
+ $checking=$this->db->query("select firstname from raghuerp_db1.students where reg_no='$reg_no'")->result();
+             if(sizeof($checking)==0){
+                return null;
+             }else{
+
+
+       $type=$this->db->query("select genderT from raghuerp_hostel.registrationdetails where reg_no='$reg_no'")->result();
+        if(sizeof($type)!=0){
+            
+
+            $gtype=$type[0]->genderT;
+            if($gtype=='M'){
+                $typ='Boys';
+            }
+            else{
+                $typ='Girls';
+            }
+
+        $details=$this->db->query("select s.reg_no,(select r.registrationid from raghuerp_hostel.registrationdetails r where r.reg_no='$reg_no' ) as rid,(select r.type from raghuerp_hostel.registrationdetails r where r.reg_no='$reg_no' ) as type,(select r.genderT from raghuerp_hostel.registrationdetails r where r.reg_no='$reg_no' ) as genderT,(select r.studentname from raghuerp_hostel.registrationdetails r where r.reg_no='$reg_no' ) as studentname,(select r.dateofbirth from raghuerp_hostel.registrationdetails r where r.reg_no='$reg_no' ) as dateofbirth,(select r.distance from raghuerp_hostel.registrationdetails r where r.reg_no='$reg_no' ) as distance,(select r.pwd from raghuerp_hostel.registrationdetails r where r.reg_no='$reg_no' ) as pwd,(select r.fathername from raghuerp_hostel.registrationdetails r where r.reg_no='$reg_no' ) as fathername,(select r.parentmobile from raghuerp_hostel.registrationdetails r where r.reg_no='$reg_no' ) as parentmobile,(select r.parentemail from raghuerp_hostel.registrationdetails r where r.reg_no='$reg_no' ) as parentemail,(select r.parentaddress from raghuerp_hostel.registrationdetails r where r.reg_no='$reg_no' ) as parentaddress,(select r.guardianname from raghuerp_hostel.registrationdetails r where r.reg_no='$reg_no' ) as guardianname,(select r.guardianrelation from raghuerp_hostel.registrationdetails r where r.reg_no='$reg_no' ) as guardianrelation,(select r.guardianmobile from raghuerp_hostel.registrationdetails r where r.reg_no='$reg_no' ) as guardianmobile,(select r.guardianemail from raghuerp_hostel.registrationdetails r where r.reg_no='$reg_no' ) as guardianemail,(select r.guardianaddress from raghuerp_hostel.registrationdetails r where r.reg_no='$reg_no' ) as guardianaddress,(select college from raghuerp_db1.colleges c where c.id=s.college) as college,(select branch from raghuerp_db1.branches b where b.id=s.branch) as branch,(select year from raghuerp_db1.year y where y.id=s.year) as year,(select d.roomno from raghuerp_hostel.roomdetails d where d.reg_no='$reg_no' ) as roomno,(select d.bedno from raghuerp_hostel.roomdetails d where d.reg_no='$reg_no' ) as bedno,(select d.hsttype from raghuerp_hostel.roomdetails d where d.reg_no='$reg_no' ) as hsttype,(select d.roomno from raghuerp_hostel.roomdetails d where d.reg_no='$reg_no' ) as roomno,(select rc.hostelid from raghuerp_hostel.roomsconfig rc where rc.roomno=(select roomno from raghuerp_hostel.roomdetails dc where dc.reg_no='$reg_no' )  and rc.hosteltype='$typ') as hostelid,(select rc.blockid from raghuerp_hostel.roomsconfig rc where rc.roomno=(select roomno from raghuerp_hostel.roomdetails dc where dc.reg_no='$reg_no' ) and rc.hosteltype='$typ' ) as blockid,(select rc.roomtype from raghuerp_hostel.roomsconfig rc where rc.roomno=(select roomno from raghuerp_hostel.roomdetails dc where dc.reg_no='$reg_no' ) and rc.hosteltype='$typ') as roomtype from raghuerp_db1.students s where s.reg_no='$reg_no'")->row();
+        return $details;
+        }else{
+            return $this->db->query("select s.reg_no,concat(null) as studentname,concat(null) as bedno from raghuerp_db1.students s where s.reg_no='$reg_no'")->row();
+        }
+    }
     }
 
     // Get Multiple query results function
