@@ -93,6 +93,7 @@ class Api extends REST_Controller {
 						case 'getbookingslist'		  	: $result = $this->Api_model->getbookingslist(); break;
 						case 'getreglist'		  	: $result = $this->Api_model->getreglist($params); break;
 						case 'vacantroom'	    : $result = $this->Api_model->vacantroom($params); break;
+						case 'waitinglist'	    : $result = $this->Api_model->waitinglist($params); break;
 						case 'addroomconfig'	    : $result = $this->Api_model->addroomconfig($params); break;
 						case 'getroomconfig'	    : $result = $this->Api_model->getroomconfig($params); break;
 						case 'getroomslistavlb'	    : $result = $this->Api_model->getroomslistavlb($params); break;
@@ -101,9 +102,29 @@ class Api extends REST_Controller {
 						case 'getdetailsbyid'	    : $result = $this->Api_model->getdetailsbyid($params); break;
 						case 'gettotalrooms'	    : $result = $this->Api_model->gettotalrooms($params); break;
 						case 'getdetailsbyroom'	    : $result = $this->Api_model->getdetailsbyroom($params); break;
-					
-						// case 'getStaff'				: $result = $this->api_model->getStaff($token->reg_no, $params); break;
-						// case 'Upload'				: $result = $this->Api_model->Upload($token->reg_no,$params); break;
+						case 'editstuddetails'	    : $result = $this->Api_model->editstuddetails($params); break;
+						case 'allocateroomstud'	    : $result = $this->Api_model->allocateroomstud($params); break;
+						case 'freetheroom'	    : $result = $this->Api_model->freetheroom($params); break;
+						case 'getavlseatscount'	    : $result = $this->Api_model->getavlseatscount($params); break;
+						case 'editroomconfig'	    : $result = $this->Api_model->editroomconfig($params); break;
+						case 'deleteroomconfig'	    : $result = $this->Api_model->deleteroomconfig($params); break;
+						case 'addbilltype'			: $result = $this->Api_model->addbilltype($params);	break;
+						case 'getbilltypes'			: $result = $this->Api_model->getbilltypes($params);	break;
+						case 'deletebilltype'			: $result = $this->Api_model->deletebilltype($params);	break;
+						case 'addpaymentdata'			: $result = $this->Api_model->addpaymentdata($params);	break;
+						case 'getmaintenancedata'			: $result = $this->Api_model->getmaintenancedata($params);	break;
+
+						case 'addregistration'		: $result = $this->Api_model->addregistration($params); break;
+						case 'addcomplaints'		: $result = $this->Api_model->addcomplaints($params); break;
+						case 'addnotification'		: $result = $this->Api_model->addnotification($params); break;
+						case 'getcomplaintslist'	: $result = $this->Api_model->getcomplaintslist(); break;
+						case 'getcomplaints'		: $result = $this->Api_model->getcomplaints($params); break;
+						case 'getNotifications'		: $result = $this->Api_model->getNotifications($params); break;
+						case 'addInstractions'		: $result = $this->Api_model->addInstractions($params); break;
+						case 'getInstructions'		: $result = $this->Api_model->getInstructions($params);	break;
+						case 'addEvents'			: $result = $this->Api_model->addEvents($params);	break;
+						case 'getEvents'			: $result = $this->Api_model->getEvents($params);	break;
+						
 					}
 				
 					$success = true;
@@ -132,6 +153,7 @@ class Api extends REST_Controller {
 		$data['enddate']=$this->post('enddate')['formatted'];
 		$data['semstartdate']=$this->post('semstartdate')['formatted'];
 		$data['semenddate']=$this->post('semenddate')['formatted'];
+		$data['hosteltype']=$this->post('hosteltype');
 		$data['description']=$this->post('description');
 	    $this->getData('addbooking',$data);	    	
 	   
@@ -142,6 +164,7 @@ class Api extends REST_Controller {
 		$data['enddate']=$this->post('enddate')['formatted'];
 		$data['semstartdate']=$this->post('semstartdate')['formatted'];
 		$data['semenddate']=$this->post('semenddate')['formatted'];
+		$data['hosteltype']=$this->post('hosteltype');
 		$data['description']=$this->post('description');
 		$data['bid']=$this->post('bid');
 	    $this->getData('editbooking',$data);	    	
@@ -204,7 +227,8 @@ class Api extends REST_Controller {
 	// regester list get view
 	public function getreglist_post(){		    
 	   
-	    $data['type']=$this->post('type');
+		$data['type']=$this->post('type');
+		$data['gender']=$this->post('gender');
 	    $this->getData('getreglist',$data);	
 	     
 	}
@@ -234,6 +258,14 @@ class Api extends REST_Controller {
 	     
 	}
 
+		// waiting list  post 
+		public function waitinglist_post(){		    
+			$data['registrationid']=$this->post('registrationid');
+		
+				$this->getData('waitinglist',$data);	
+				 
+			}
+
 		// Add room config post
 	public function addroomconfig_post(){	
 		$data['roomtype']=$this->post('roomtype');
@@ -242,7 +274,8 @@ class Api extends REST_Controller {
 		$data['roomno']=$this->post('roomno');
 		$data['hosteltype']=$this->post('hosteltype');
 		$data['hostelid']=$this->post('hostelid');
-		$data['blockid']=$this->post('blockid');		
+		$data['blockid']=$this->post('blockid');
+		$data['roomrent']=$this->post('roomrent');		
 	    $this->getData('addroomconfig',$data);	    	
 	 
 	}
@@ -294,6 +327,226 @@ class Api extends REST_Controller {
 		$data['bedno']=$this->post('bedno');	
 	    $this->getData('getdetailsbyroom',$data);	    	
 	 
+	}
+
+
+			// edit student details by rid
+	public function editstuddetails_post(){	
+		$data['registrationid']=$this->post('registrationid');
+		$data['studentname']=$this->post('studentname');
+		$data['dateofbirth']=$this->post('dateofbirth')['formatted'];
+		$data['genderT']=$this->post('genderT');
+		$data['pwd']=$this->post('pwd');
+		$data['distance']=$this->post('distance');
+		$data['fathername']=$this->post('fathername');
+		$data['occupation']=$this->post('occupation');
+		$data['parentmobile']=$this->post('parentmobile');
+		$data['parentemail']=$this->post('parentemail');
+		$data['parentaddress']=$this->post('parentaddress');
+		$data['guardianname']=$this->post('guardianname');
+		$data['guardianrelation']=$this->post('guardianrelation');
+		$data['guardianmobile']=$this->post('guardianmobile');
+		$data['guardianemail']=$this->post('guardianemail');
+		$data['guardianaddress']=$this->post('guardianaddress');
+		
+	    $this->getData('editstuddetails',$data);	    	
+	   
+	}
+
+		// allocate Room student by regno
+	public function allocateroomstud_post(){	
+		$data['roomno']=$this->post('roomno');
+		$data['bedno']=$this->post('bedno');
+		$data['reg_no']=$this->post('reg_no');
+		$data['hosteltype']=$this->post('hosteltype');
+		$data['roomtype']=$this->post('roomtype');
+
+		
+	    $this->getData('allocateroomstud',$data);	    	
+	   
+	}
+
+		// Free Room 
+		public function freetheroom_post(){	
+			$data['roomno']=$this->post('roomno');
+			$data['reg_no']=$this->post('reg_no');
+			$data['hosteltype']=$this->post('hosteltype');
+			
+
+			$this->getData('freetheroom',$data);	    	
+		   
+		}
+
+	// Free Room 
+	public function getavlseatscount_post(){	
+        $data['hosteltype']=$this->post('hosteltype');
+		$this->getData('getavlseatscount',$data);	    	
+	   
+	}
+
+	// Edit Room Config 
+	public function editroomconfig_post(){	
+		$data['hosteltype']=$this->post('hosteltype');
+		$data['roomno']=$this->post('roomno');
+		$data['avlbeds']=$this->post('avlbeds');
+		$data['roomtype']=$this->post('roomtype');
+		$data['rcstatus']=$this->post('rcstatus');
+		$data['hostelid']=$this->post('hostelid');
+		$data['blockid']=$this->post('blockid');
+		$data['totbeds']=$this->post('totbeds');
+		$data['rcid']=$this->post('rcid');
+		$data['roomrent']=$this->post('roomrent');
+
+		
+
+		$this->getData('editroomconfig',$data);	    	
+	   
+	}
+
+	// Delete Room Config 
+	public function deleteroomconfig_post(){	
+	
+		$data['rcid']=$this->post('rcid');
+		
+
+		$this->getData('deleteroomconfig',$data);	    	
+	   
+	}
+
+	// venkat sai
+
+	// Add registration post
+	public function addregistration_post(){	
+		// $data['reg_no']=$this->post('reg_no');
+		$data['studentname']=$this->post('studentname');
+		$data['dateofbirth']=$this->post('dateofbirth')['formatted'];
+		$data['genderT']=$this->post('genderT');
+		$data['pwd']=$this->post('pwd');
+		$data['reg_no']=$this->post('reg_no');
+		$data['distance']=$this->post('distance');
+		$data['roomtype']=$this->post('roomtype');
+		$data['priority']=$this->post('priority');
+		$data['fathername']=$this->post('fathername');
+		$data['occupation']=$this->post('occupation');
+		$data['type']=$this->post('roomtype');
+		$data['parentmobile']=$this->post('parentmobile');
+		$data['parentemail']=$this->post('parentemail');
+		$data['parentaddress']=$this->post('parentaddress');
+		$data['permanentaddress']=$this->post('permanentaddress');
+		$data['guardianname']=$this->post('guardianname');
+		$data['guardianrelation']=$this->post('guardianrelation');
+		$data['guardianmobile']=$this->post('guardianmobile');
+		$data['guardianemail']=$this->post('guardianemail');
+		$data['guardianaddress']=$this->post('guardianaddress');
+		$data['guardianpermanentaddress']=$this->post('guardianpermanentaddress');		
+	    $this->getData('addregistration',$data);	    	
+	    // $this->response(true);
+	}
+
+
+	// Add Complaints post
+	public function addcomplaints_post(){
+		// $data['typeid']=$this->post('typeid');
+		$data['complaint_type']=$this->post('complaint_type');
+		$data['reg_no']=$this->post('reg_no');
+		$data['complaint_priority']=$this->post('complaint_priority');
+		$data['complaint_category_type']=$this->post('complaint_category_type');
+		$data['feedback']=$this->post('feedback');		
+	    $this->getData('addcomplaints',$data);	    	
+	    $this->response(true);
+	}
+
+	// Add Notifications post
+	public function addnotification_post(){
+		$data['notificationdate']=$this->post('notificationdate');
+		$data['noticedescription']=$this->post('noticedescription');
+	    $this->getData('addnotification',$data);	    	
+	    //$this->response(true);
+	}
+	// get Notifications
+	public function getNotifications_get(){
+		$data=[];
+		$this->getData('getNotifications',$data);
+	}
+
+	// Add Instractions post
+	public function addInstractions_post(){
+		$data['instructiondate']=$this->post('instructiondate');
+		$data['instructiondescription']=$this->post('instructiondescription');
+	    $this->getData('addInstractions',$data);	    	
+	    //$this->response(true);
+	}
+
+	// get Notifications
+	public function getInstructions_get(){
+		$data=[];
+		$this->getData('getInstructions',$data);
+	}
+
+	// Add Events post
+	public function addEvents_post(){
+		$data['eventtype']=$this->post('eventtype');
+		$data['eventdate']=$this->post('eventdate');
+		$data['eventdescription']=$this->post('eventdescription');
+		$data['eventtime']=$this->post('eventtime');
+	    $this->getData('addEvents',$data);	    	
+	    //$this->response(true);
+	}
+
+	// get Events
+	public function getEvents_get(){
+		$data=[];
+		$this->getData('getEvents',$data);
+	}
+
+
+	// complaints list get view
+	public function getcomplaints_post(){		    
+	   
+	    $data['type']=$this->post('type');
+	    $this->getData('getcomplaints',$data);	
+	     
+	}
+
+	// add Bill type
+	public function addbilltype_post(){		    
+		 $data['billtype']=$this->post('billtype');
+		 $this->getData('addbilltype',$data);	
+		  
+	 }
+
+	 // get Bill types 
+	public function getbilltypes_get(){		    
+		$this->getData('getbilltypes',[]);	
+		 
+	}
+
+	// get Bill types 
+	public function deletebilltype_post(){
+        $data['bid']=$this->post('bid');
+		$this->getData('deletebilltype',$data);	
+		 
+	}
+
+	// Add Payment Data 
+	public function addpaymentdata_post(){
+		$data['paymentdate']=$this->post('paymentdate')['formatted'] .' '. date('H:i:s');
+		$data['reg_no']=$this->post('reg_no');
+		$data['receipt_no']=$this->post('receipt_no');
+		$data['ctype']=$this->post('ctype');
+		$data['billtype']=$this->post('billtype');
+		$data['description']=$this->post('description');
+		$data['cost']=$this->post('cost');
+		$this->getData('addpaymentdata',$data);	
+		 
+	}
+
+	// get Bill types 
+	public function getmaintenancedata_post(){
+		$data['btype']=$this->post('billtype');
+		$data['ctype']=$this->post('ctype');
+		$this->getData('getmaintenancedata',$data);	
+		 
 	}
 
 	// Get Multiple query results function

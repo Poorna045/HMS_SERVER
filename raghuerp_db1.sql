@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Aug 04, 2017 at 02:29 PM
+-- Generation Time: Aug 24, 2017 at 02:24 PM
 -- Server version: 10.1.13-MariaDB
 -- PHP Version: 5.6.20
 
@@ -505,7 +505,13 @@ INSERT INTO `students` (`id`, `firstname`, `lastname`, `dispname`, `reg_no`, `fa
 (5, 'ECE 2 YR A Sec.', 'A Sec', 'ECE_CR_2YR_A', 'RECECE2ACR', '', '', 'cse_cecefsdr_student@raghuenggcollege.com', '9879875850', '', 'Raghu Engineering College', 'NAD Kotha Road', '', '1999-08-05', 1, 1, 8, 24, 18, '', '', '', 'M', '', '', '', 'cr', 1, '2017-06-15 00:00:00', '2017-08-01 09:53:24'),
 (6, 'ECE 4 YR A Sec.', 'A Sec', 'ECE_CR_4YR_A', 'RECECE4ACR', '', '', 'cse_cedfsadfsacefsdr_student@raghuenggcollege.com', '9879875850', '', 'Raghu Engineering College', 'NAD Kotha Road', '', '1999-08-05', 1, 1, 8, 26, 20, '', '', '', 'M', '', '', '', 'cr', 1, '2017-06-15 00:00:00', '2017-08-01 09:53:33'),
 (7, 'ECE 3 YR A Sec.', 'A Sec', 'ECE_CR_3YR_A', 'RECECE3ACR', '', '', 'cse_cedfsadfsacefdfsadfsasdr_student@raghuenggcollege.com', '9879875850', '', 'Raghu Engineering College', 'NAD Kotha Road', '', '1999-08-05', 1, 1, 8, 25, 19, '', '', '', 'M', '', '', '', 'cr', 1, '2017-06-15 00:00:00', '2017-08-01 09:53:44'),
-(8, 'RIT CSE 3A', 'A Sec', 'RIT CSE 3A', 'ritcse3a', '', '', 'cse_cedfsadfsadfscefdfsadfsasdr_student@raghuenggcollege.com', '9879875850', '', 'Raghu Engineering College', 'NAD Kotha Road', '', '1999-08-05', 2, 4, 5, 17, 15, '', '', '', 'F', '', '', '', 'cr', 1, '2017-06-15 00:00:00', '2017-08-04 10:30:22');
+(8, 'RIT CSE 3A', 'A Sec', 'RIT CSE 3A', 'ritcse3a', '', '', 'cse_cedfsadfsadfscefdfsadfsasdr_student@raghuenggcollege.com', '9879875850', '', 'Raghu Engineering College', 'NAD Kotha Road', '', '1999-08-05', 2, 4, 5, 17, 15, '', '', '', 'F', '', '', '', 'cr', 1, '2017-06-15 00:00:00', '2017-08-04 10:30:22'),
+(9, 'karthik', 'A Sec', 'RIT CSE 3A', 'reccse001', '', '', 'karthik@raghuenggcollege.com', '9879875855', '', 'Raghu Engineering College', 'NAD Kotha Road', '', '1999-08-09', 2, 4, 5, 17, 15, '', '', '', 'F', '', '', '', 'cr', 1, '2017-06-15 00:00:00', '2017-08-04 10:30:22'),
+(10, 'jogesh', 'A Sec', 'ECE_CR_4YR_A', 'recmech001', '', '', 'jogesh@raghuenggcollege.com', '9879875856', '', 'Raghu Engineering College', 'NAD Kotha Road', '', '1999-08-22', 1, 1, 8, 26, 20, '', '', '', 'M', '', '', '', 'cr', 1, '2017-06-15 00:00:00', '2017-08-01 09:53:33'),
+(11, 'suresh', 'A Sec', 'ECE_CR_4YR_A', 'recmech002', '', '', 'suresh@raghuenggcollege.com', '9879875256', '', 'Raghu Engineering College', 'NAD Kotha Road', '', '1999-08-16', 1, 1, 8, 26, 20, '', '', '', 'M', '', '', '', 'cr', 1, '2017-06-15 00:00:00', '2017-08-01 09:53:33'),
+(18, 'praveen', 'Kumar', 'Vinay', 'reccse002', '', '', 'cse_student54@raghuenggcollege.com', '9879175850', '', 'Raghu Engineering College', 'NAD Kotha Road', '', '1999-08-08', 1, 1, 4, 12, 10, '', '', '', 'M', '', '', '', 'cr', 1, '2017-06-15 00:00:00', '2017-07-27 16:45:55'),
+(19, 'shrija', 'A Sec', 'ECE_CR_4YR_A', 'reccse003', '', '', 'csestudent3@raghuenggcollege.com', '9779875850', '', 'Raghu Engineering College', 'NAD Kotha Road', '', '1999-08-08', 1, 1, 8, 26, 20, '', '', '', 'F', '', '', '', 'cr', 1, '2017-06-15 00:00:00', '2017-08-01 09:53:33'),
+(20, 'susmitha', 'A Sec', 'RIT CSE 3A', 'ritmech003', '', '', 'cse_student4@raghuenggcollege.com', '9869875850', '', 'Raghu Engineering College', 'NAD Kotha Road', '', '1999-08-15', 2, 4, 5, 17, 15, '', '', '', 'F', '', '', '', 'cr', 1, '2017-06-15 00:00:00', '2017-08-04 10:30:22');
 
 --
 -- Triggers `students`
@@ -791,7 +797,7 @@ ALTER TABLE `staff_certificate`
 -- AUTO_INCREMENT for table `students`
 --
 ALTER TABLE `students`
-  MODIFY `id` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 --
 -- AUTO_INCREMENT for table `users`
 --
