@@ -116,8 +116,13 @@ class Api_model extends CI_Model
          $data['n_id']=$this->db->insert_id();
 
          $this->db->insert('raghuerp_hostel.bookings',$data);
-       
-             
+         
+         $lastid=$this->db->insert_id();
+
+         $this->db->query("UPDATE raghuerp_hostel.selectionstatus s SET s.status='1' WHERE s.bid IN (SELECT b.bid FROM raghuerp_hostel.bookings b where b.hosteltype='".$data['hosteltype']."') ");
+
+         $this->db->query("INSERT INTO raghuerp_hostel.selectionstatus (`ssid`, `bid`, `status`) VALUES (NULL,'$lastid', '0') ");
+
     }
 
      // postpone/prepone booking end date
@@ -552,6 +557,28 @@ class Api_model extends CI_Model
      }
 
 
+        // enable status to selection process
+        public function clearregdatavisible($data){
+
+            $this->db->query("UPDATE raghuerp_hostel.selectionstatus s SET s.status='1' WHERE s.bid IN (SELECT b.bid FROM raghuerp_hostel.bookings b where b.hosteltype='".$data['hosteltype']."' )");       
+         
+        }
+
+         // enable visible to selection process
+         public function visiselc($data){
+            
+                        $vis=$this->db->query("SELECT * FROM raghuerp_hostel.selectionstatus s WHERE s.status='0' AND s.bid IN (SELECT b.bid FROM raghuerp_hostel.bookings b where b.hosteltype='".$data['hosteltype']."' )")->result();       
+                        
+                   if (sizeof($vis)>0) {
+                       $mes='enable';
+                   } else {
+                      $mes='disable';
+                   }
+                   
+                   return $mes;
+
+         }
+
     // add Complaints
      public function addcomplaints($data){
        $this->db->insert('raghuerp_hostel.complaints',$data);       
@@ -935,35 +962,38 @@ class Api_model extends CI_Model
      
                         //  get register form show Status
     public function getregstatus($data){
-        
-                if ($data['gender']!='all') {
-                    $valid=$this->db->query("SELECT r.reg_no FROM  raghuerp_hostel.roomdetails r INNER JOIN raghuerp_dbnew.staff st on r.reg_no=st.reg_no and st.gender='".$data['type']."'
-                    UNION
-                    SELECT r.reg_no FROM  raghuerp_hostel.roomdetails r INNER JOIN raghuerp_dbnew.students std on r.reg_no=std.reg_no and std.gender='".$data['type']."'")->result();
-                    
-                } else {
-                    $valid=$this->db->query("SELECT r.reg_no FROM  raghuerp_hostel.roomdetails r INNER JOIN raghuerp_dbnew.staff st on r.reg_no=st.reg_no 
-                    UNION
-                    SELECT r.reg_no FROM  raghuerp_hostel.roomdetails r INNER JOIN raghuerp_dbnew.students std on r.reg_no=std.reg_no ")->result();            
-                }
+          
+        if ($data['utype']=='adm') {
+            $sql="select * from raghuerp_hostel.selectionstatus ss where ss.status='0'";
+           $das= $this->db->query($sql)->result();
+
+           if(sizeof($das)>0){
+               $mes='disable';
+            } else{
+                $mes='enable';
+            }
+
+        } else {
+            if ($data['gender']=='M') {
+                $sql="select * from raghuerp_hostel.bookings bs where bs.hosteltype='Boys' and bs.status='enable'";
+                $das= $this->db->query($sql)->result();
                 
-               
-                if (sizeof($valid)>0) {
-                   
-                    return 'exists';
-                } else {
+            } else if($data['gender']=='F') {
+                $sql="select * from raghuerp_hostel.bookings bs where bs.hosteltype='Girls' and bs.status='enable'";
+                $das= $this->db->query($sql)->result();
+            }
+
+            if(sizeof($das)>0){
+                $mes='enable';
+            } else{
+                $mes='disable';
+            }
+            
+        }
         
-                    if ($data['type']!='all') {
-                        $this->db->query("DELETE FROM raghuerp_hostel.registereddetails  WHERE reg_no IN ( SELECT * FROM raghuerp_dbnew.staff s WHERE s.gender='".$data['type']."') ");
-                                       
-                    } else {
-                        $this->db->query("DELETE FROM raghuerp_hostel.registereddetails ");
-                        
-                    }
-                 return 'ok';
-                }   
+            return $mes;   
                           
-             }
+     }
 
     // Get Multiple query results function
     public function GetMultipleQueryResult($queryString)  {

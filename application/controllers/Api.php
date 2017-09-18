@@ -133,7 +133,10 @@ class Api extends REST_Controller {
 						case 'emptytheroom'			: $result = $this->Api_model->emptytheroom($params); break;
 						case 'getvalidusertest'			: $result = $this->Api_model->getvalidusertest($params); break;
 						case 'changeregistration'			: $result = $this->Api_model->changeregistration($params); break;
+						case 'clearregdatavisible'			: $result = $this->Api_model->clearregdatavisible($params); break;
+						case 'visiselc'			: $result = $this->Api_model->visiselc($params); break;
 						
+
 						// roomdetails for venkat sai
 						case 'getRoomDetails'			: $result = $this->Api_model->getRoomDetails(); break;
 						
@@ -219,6 +222,15 @@ class Api extends REST_Controller {
 	    $this->getData('addbooking',$data);	    	
 	   
 	}
+
+		// visible selection post
+		public function visiselc_post(){
+			
+					
+					$data['hosteltype']=$this->post('hosteltype');
+					$this->getData('visiselc',$data);	    	
+				   
+				}
 
 	
 	// postpone/prepone booking end date
@@ -472,6 +484,13 @@ class Api extends REST_Controller {
 		$this->getData('getavlseatscount',$data);	    	
 	   
 	}
+
+		// Get enable status to registration form 
+		public function clearregdatavisible_post(){	
+			$data['hosteltype']=$this->post('hosteltype');
+			$this->getData('clearregdatavisible',$data);	    	
+		   
+		}
 
 	// Edit Room Config 
 	public function editroomconfig_post(){	
